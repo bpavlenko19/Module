@@ -1,0 +1,93 @@
+using system;
+
+class Car
+{
+    public string Brand { get; set; }
+    public string Model { get; set; }
+    public string Color { get; set; }
+    public int Year { get; set; }
+    //Додаткові параметри...
+    
+    public void DisplayInfo()
+    {
+        Console.WriteLine($"Car: {Year} {Color} {Brand} {Model}");
+    }
+}
+
+//Інтерфейс будівельника
+interface ICarBuilder
+{
+    void SetBrand(string brand);
+    void SetModel(string model);
+    void SetColor(string color);
+    void SetYear(int year);
+    //Методи для встановлення додаткових параметрів
+    Car GetCar();
+}
+
+//Будівельник
+class CarBuilder : ICarBuilder
+{
+    private Car car = new Car();
+
+    public void SetBrand(string brand)
+    {
+        car.Brand = brand;
+    }
+
+    public void SetModel(string model)
+    {
+        car.Model = model;
+    }
+
+    public void SetColor(string color)
+    {
+        car.Color = color;
+    }
+
+    public void SetYear(int year)
+    {
+        car.Year = year;
+    }
+
+    public Car GetCar()
+    {
+        return car;
+    }
+}
+
+//Директор
+class CarDirector
+{
+    private ICarBuilder builder;
+
+    public CarDirector(ICarBuilder builder)
+    {
+        this.builder = builder;
+    }
+
+    public void ConstructCar()
+    {
+        builder.SetBrand("Nissan");
+        builder.SetModel("Skyline");
+        builder.SetColor("Blue");
+        builder.SetYear(1999);
+        //Встановлення додаткових параметрів.
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        //Використання паттерна Builder
+        ICarBuilder builder = new CarBuilder();
+        CarDirector director = new CarDirector(builder);
+
+        director.ConstructCar();
+        Car car = builder.GetCar();
+
+        //Вивід інформації про створений автомобіль
+        car.DisplayInfo();
+    }
+}
